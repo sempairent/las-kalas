@@ -10,6 +10,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
+        surname: user.surname,
+        dni: user.dni,
         email: user.email,
     });
 
@@ -31,7 +33,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Nombre" />
+                    <InputLabel htmlFor="name" value="Nombres" />
 
                     <TextInput
                         id="name"
@@ -44,6 +46,39 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.name} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="surname" value="Apellidos" />
+
+                    <TextInput
+                        id="surname"
+                        className="mt-1 block w-full"
+                        value={data.surname}
+                        onChange={(e) => setData('surname', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="surname"
+                    />
+
+                    <InputError className="mt-2" message={errors.surname} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="dni" value="DNI" />
+
+                    <TextInput
+                        id="dni"
+                        className="mt-1 block w-full"
+                        value={data.dni}
+                        onChange={(e) => setData('dni', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="dni"
+                    />
+
+                    <InputError className="mt-2" message={errors.dni} />
                 </div>
 
                 <div>

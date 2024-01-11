@@ -10,6 +10,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        dni: '',
         password: '',
         password_confirmation: '',
     });
@@ -32,7 +33,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Nombre" />
+                    <InputLabel htmlFor="name" value="Nombres" />
 
                     <TextInput
                         id="name"
@@ -46,6 +47,38 @@ export default function Register() {
                     />
 
                     <InputError message={errors.name} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="surname" value="Apellidos" />
+
+                    <TextInput
+                        id="surname"
+                        name="surname"
+                        value={data.surname}
+                        className="mt-1 block w-full"
+                        autoComplete="surname"
+                        onChange={(e) => setData('surname', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.surname} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="dni" value="DNI" />
+
+                    <TextInput
+                        id="dni"
+                        name="dni"
+                        value={data.dni}
+                        className="mt-1 block w-full"
+                        autoComplete="dni"
+                        onChange={(e) => setData('dni', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.dni} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
