@@ -29,6 +29,18 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/especialidades', function () {
+    return Inertia::render('Especialidades');
+})->middleware(['auth', 'verified'])->name('especialidades');
+
+Route::get('/servicio', function () {
+    return Inertia::render('Servicio');
+})->middleware(['auth', 'verified'])->name('servicio');
+
+Route::get('/conocemas', function () {
+    return Inertia::render('Conocemas');
+})->middleware(['auth', 'verified'])->name('conocemas');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

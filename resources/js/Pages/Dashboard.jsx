@@ -9,13 +9,35 @@ export default function Dashboard({ auth }) {
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">¡Haz iniciado sesión!</div>
-                    </div>
-                </div>
-            </div>
+            <div class="py-20 px-20 flex flex-col items-center md:flex-row md:justify-center">
+    <div class="mb-5 md:mb-0 md:mr-2 w-full md:w-1/2">
+        <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-8 md:px-20 py-4 mb-5 w-full md:w-full dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+            Consulta médica
+        </button>
+    </div>
+    <div class="md:ml-2 w-full md:w-1/2">
+        <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-8 md:px-20 py-4 mb-5 w-full md:w-full dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+            Mis citas
+        </button>
+    </div>
+</div>
+<div class="py-20 px-20 flex flex-col items-center md:flex-row md:justify-center">
+    <div class="mb-5 md:mb-0 md:mr-2 w-full md:w-1/2">
+        <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-8 md:px-20 py-4 mb-5 w-full md:w-full dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+            Prescripciones médicas
+        </button>
+    </div>
+    <div class="md:ml-2 w-full md:w-1/2">
+        <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-8 md:px-20 py-4 mb-5 w-full md:w-full dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+            Registrar nueva cita
+        </button>
+    </div>
+</div>
+
+
+
+
+
         </AuthenticatedLayout>
     );
 }

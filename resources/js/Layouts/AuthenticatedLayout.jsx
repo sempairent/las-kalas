@@ -22,8 +22,25 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
+                                    Inicio
                                 </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('especialidades')} active={route().current('especialidades')}>
+                                    Especialidades
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('servicio')} active={route().current('servicio')}>
+                                    Servicio
+                                </NavLink>
+                                
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('conocemas')} active={route().current('conocemas')}>
+                                    Conoce Más
+                                </NavLink>
+                                
                             </div>
                         </div>
 
