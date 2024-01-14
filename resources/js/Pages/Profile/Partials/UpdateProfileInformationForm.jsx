@@ -10,7 +10,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
-        surname: user.surname,
+        paternal: user.paternal,
+        maternal: user.maternal,
         dni: user.dni,
         email: user.email,
     });
@@ -39,7 +40,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData('name', e.target.value.toUpperCase())}
                         required
                         isFocused
                         autoComplete="name"
@@ -50,20 +51,37 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
 
                 <div>
-                    <InputLabel htmlFor="surname" value="Apellidos" />
+                    <InputLabel htmlFor="paternal" value="Apellido Paterno" />
 
                     <TextInput
-                        id="surname"
+                        id="paternal"
                         className="mt-1 block w-full"
-                        value={data.surname}
-                        onChange={(e) => setData('surname', e.target.value)}
+                        value={data.paternal}
+                        onChange={(e) => setData('paternal', e.target.value.toUpperCase())}
                         required
                         isFocused
-                        autoComplete="surname"
+                        autoComplete="paternal"
                     />
 
-                    <InputError className="mt-2" message={errors.surname} />
+                    <InputError className="mt-2" message={errors.paternal} />
                 </div>
+
+                <div>
+                    <InputLabel htmlFor="maternal" value="Apellido Materno" />
+
+                    <TextInput
+                        id="maternal"
+                        className="mt-1 block w-full"
+                        value={data.maternal}
+                        onChange={(e) => setData('maternal', e.target.value.toUpperCase())}
+                        required
+                        isFocused
+                        autoComplete="maternal"
+                    />
+
+                    <InputError className="mt-2" message={errors.maternal} />
+                </div>
+
 
                 <div>
                     <InputLabel htmlFor="dni" value="DNI" />
