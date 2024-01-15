@@ -31,14 +31,16 @@ export default function Register() {
 
     const [dateValue, setDateValue] = useState(null);
     useEffect(() => {
-        // Convierte la fecha seleccionada a un string en el formato 'yyyy-MM-dd'
-        const formattedDate = dateValue ? format(dateValue, "yyyy-MM-dd") : "";
-
-        // Solo actualiza si el valor es diferente para evitar el bucle infinito
-        if (data.birthday !== formattedDate) {
-            setData("birthday", formattedDate);
+        if (dateValue) {
+            // Formatea la fecha en UTC para evitar problemas de zona horaria
+            const formattedDate = format(dateValue, "yyyy-MM-dd");
+            if (data.birthday !== formattedDate) {
+                setData("birthday", formattedDate);
+            }
+        } else if (dateValue === null) {
+            setData("birthday", "");
         }
-    }, [dateValue]); // Dependencia solo en dateValue
+    }, [dateValue]);
 
     useEffect(() => {
         return () => {
@@ -62,7 +64,7 @@ export default function Register() {
         // setProvincia("");
         // setDistrito("");
         // setData({ ...data, departamento: value, provincia: "", distrito: "" });
-        setData({ ...data, departamento:value});
+        setData({ ...data, departamento: value });
         setDepartamento(value);
         setProvincia("");
         setDistrito("");
@@ -73,7 +75,7 @@ export default function Register() {
         // setProvincia(value);
         // setDistrito("");
         // setData({ ...data, provincia: value, distrito: "" });
-        setData({ ...data, provincia:value});
+        setData({ ...data, provincia: value });
         setProvincia(value);
         setProvincia(value);
         setDistrito("");
@@ -81,7 +83,7 @@ export default function Register() {
 
     const handleDistritoChange = (value) => {
         // setData({ ...data, distrito: value });
-        setData({ ...data, distrito:value});
+        setData({ ...data, distrito: value });
         setDistrito(value);
     };
 
@@ -273,9 +275,24 @@ export default function Register() {
                             name="birthday"
                             className="mt-1 block w-full"
                             value={
-                                data.birthday ? new Date(data.birthday) : null
+                                data.birthday
+                                    ? new Date(data.birthday + "T12:00:00Z")
+                                    : null
                             }
-                            onChange={setDateValue}
+                            onChange={(date) => {
+                                // Asegúrate de que la fecha sea UTC y ajusta la hora para evitar problemas de zona horaria
+                                const adjustedDate = date
+                                    ? new Date(
+                                          Date.UTC(
+                                              date.getFullYear(),
+                                              date.getMonth(),
+                                              date.getDate(),
+                                              12
+                                          )
+                                      )
+                                    : date;
+                                setDateValue(adjustedDate);
+                            }}
                             required
                         />
 
