@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name', 25);
             $table->string('paternal', 15);
             $table->string('maternal', 15);
-            $table->string('departamento', 20);
-            $table->string('provincia', 20);
-            $table->string('distrito', 20);
+            $table->string('departamento', 30);
+            $table->string('provincia', 30);
+            $table->string('distrito', 30);
             $table->char('dni', 8)->unique();
             $table->date('birthday');
             $table->string('email', 40)->unique();
