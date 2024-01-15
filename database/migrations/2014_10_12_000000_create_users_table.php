@@ -16,9 +16,14 @@ return new class extends Migration
             $table->string('name', 25);
             $table->string('paternal', 15);
             $table->string('maternal', 15);
+            $table->string('departamento', 15);
+            $table->string('provincia', 15);
+            $table->string('distrito', 15);
             $table->char('dni', 8)->unique();
+            $table->date('birthday');
             $table->string('email', 40)->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('current_address', 70);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

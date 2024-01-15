@@ -1,34 +1,54 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import { Transition } from "@headlessui/react";
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+// import moment from "moment";
+import { DatePicker } from "antd";
+
+export default function UpdateProfileInformation({
+    mustVerifyEmail,
+    status,
+    className = "",
+}) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
-        paternal: user.paternal,
-        maternal: user.maternal,
-        dni: user.dni,
-        email: user.email,
-    });
+    const { data, setData, patch, errors, processing, recentlySuccessful } =
+        useForm({
+            name: user.name,
+            paternal: user.paternal,
+            maternal: user.maternal,
+            departamento: user.departamento,
+            provincia: user.provincia,
+            distrito: user.distrito,
+            dni: user.dni,
+            birthday: user.birthday,
+            email: user.email,
+            current_address: user.current_address,
+        });
+
+    const handleDateChange = (date, dateString) => {
+        setData("birthday", dateString); // Actualiza el estado del formulario con la fecha seleccionada
+    };
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        patch(route("profile.update"));
     };
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Perfil de información</h2>
+                <h2 className="text-lg font-medium text-gray-900">
+                    Perfil de información
+                </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Actualice la información del perfil y la dirección de correo electrónico de su cuenta.
+                    Actualice la información del perfil y la dirección de correo
+                    electrónico de su cuenta.
                 </p>
             </header>
 
@@ -40,7 +60,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                            setData("name", e.target.value.toUpperCase())
+                        }
                         required
                         isFocused
                         autoComplete="name"
@@ -49,7 +71,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
-
                 <div>
                     <InputLabel htmlFor="paternal" value="Apellido Paterno" />
 
@@ -57,7 +78,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="paternal"
                         className="mt-1 block w-full"
                         value={data.paternal}
-                        onChange={(e) => setData('paternal', e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                            setData("paternal", e.target.value.toUpperCase())
+                        }
                         required
                         isFocused
                         autoComplete="paternal"
@@ -73,7 +96,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="maternal"
                         className="mt-1 block w-full"
                         value={data.maternal}
-                        onChange={(e) => setData('maternal', e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                            setData("maternal", e.target.value.toUpperCase())
+                        }
                         required
                         isFocused
                         autoComplete="maternal"
@@ -82,6 +107,65 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.maternal} />
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="departamento" value="Departamento" />
+
+                    <TextInput
+                        id="departamento"
+                        className="mt-1 block w-full"
+                        value={data.departamento}
+                        onChange={(e) =>
+                            setData(
+                                "departamento",
+                                e.target.value.toUpperCase()
+                            )
+                        }
+                        required
+                        isFocused
+                        autoComplete="departamento"
+                    />
+
+                    <InputError
+                        className="mt-2"
+                        message={errors.departamento}
+                    />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="provincia" value="Provincia" />
+
+                    <TextInput
+                        id="provincia"
+                        className="mt-1 block w-full"
+                        value={data.provincia}
+                        onChange={(e) =>
+                            setData("provincia", e.target.value.toUpperCase())
+                        }
+                        required
+                        isFocused
+                        autoComplete="provincia"
+                    />
+
+                    <InputError className="mt-2" message={errors.provincia} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="distrito" value="Distrito" />
+
+                    <TextInput
+                        id="distrito"
+                        className="mt-1 block w-full"
+                        value={data.distrito}
+                        onChange={(e) =>
+                            setData("distrito", e.target.value.toUpperCase())
+                        }
+                        required
+                        isFocused
+                        autoComplete="distrito"
+                    />
+
+                    <InputError className="mt-2" message={errors.distrito} />
+                </div>
 
                 <div>
                     <InputLabel htmlFor="dni" value="DNI" />
@@ -90,13 +174,45 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="dni"
                         className="mt-1 block w-full"
                         value={data.dni}
-                        onChange={(e) => setData('dni', e.target.value)}
+                        onChange={(e) => setData("dni", e.target.value)}
                         required
                         isFocused
                         autoComplete="dni"
+                        maxLength={8}
                     />
 
                     <InputError className="mt-2" message={errors.dni} />
+                </div>
+
+                <div>
+                    <InputLabel
+                        htmlFor="birthday"
+                        value="Fecha de Nacimiento"
+                    />
+
+                    {/* <TextInput
+                        id="birthday"
+                        className="mt-1 block w-full"
+                        value={data.birthday}
+                        onChange={(e) =>
+                            setData("birthday", e.target.value.toUpperCase())
+                        }
+                        required
+                        isFocused
+                        autoComplete="birthday"
+                    /> */}
+
+                    <DatePicker
+                        id="birthday"
+                        name="birthday"
+                        className="mt-1 block w-full"
+                        onChange={handleDateChange}
+                        format="YYYY-MM-DD" // Formato de fecha, ajusta según necesidad
+                        autoComplete="birthday"
+                        required
+                    />
+
+                    <InputError className="mt-2" message={errors.birthday} />
                 </div>
 
                 <div>
@@ -107,7 +223,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={(e) => setData("email", e.target.value)}
                         required
                         autoComplete="username"
                     />
@@ -115,12 +231,39 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
+                <div>
+                    <InputLabel
+                        htmlFor="current_address"
+                        value="Dirección actual"
+                    />
+
+                    <TextInput
+                        id="current_address"
+                        className="mt-1 block w-full"
+                        value={data.current_address}
+                        onChange={(e) =>
+                            setData(
+                                "current_address",
+                                e.target.value.toUpperCase()
+                            )
+                        }
+                        required
+                        isFocused
+                        autoComplete="current_address"
+                    />
+
+                    <InputError
+                        className="mt-2"
+                        message={errors.current_address}
+                    />
+                </div>
+
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800">
                             Your email address is unverified.
                             <Link
-                                href={route('verification.send')}
+                                href={route("verification.send")}
                                 method="post"
                                 as="button"
                                 className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -129,9 +272,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                             </Link>
                         </p>
 
-                        {status === 'verification-link-sent' && (
+                        {status === "verification-link-sent" && (
                             <div className="mt-2 font-medium text-sm text-green-600">
-                                A new verification link has been sent to your email address.
+                                A new verification link has been sent to your
+                                email address.
                             </div>
                         )}
                     </div>

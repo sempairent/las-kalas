@@ -21,8 +21,13 @@ class User extends Authenticatable
         'name',
         'paternal',
         'maternal',
+        'departamento',
+        'provincia',
+        'distrito',
         'dni',
+        'birthday',
         'email',
+        'current_address',
         'password',
     ];
 
