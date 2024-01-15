@@ -1,0 +1,10 @@
+.input {
+    transition: none;
+    height: 42px;
+    font-size: 16px;
+
+    &:focus-within {
+        outline: rem(2px) solid var(--mantine-color-violet-filled);
+        border-color: transparent;
+    }
+}

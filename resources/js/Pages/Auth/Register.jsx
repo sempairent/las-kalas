@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -6,7 +6,12 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-import { DatePicker } from "antd";
+import { Select } from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import { format } from "date-fns";
+
+import dataDepartamentos from "../../Datos/DataDepartamentos";
+import dataProvincias from "../../Datos/DataProvincias";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -24,9 +29,16 @@ export default function Register() {
         password_confirmation: "",
     });
 
-    const handleDateChange = (date, dateString) => {
-        setData("birthday", dateString); // Actualiza el estado del formulario con la fecha seleccionada
-    };
+    const [dateValue, setDateValue] = useState(null);
+    useEffect(() => {
+        // Convierte la fecha seleccionada a un string en el formato 'yyyy-MM-dd'
+        const formattedDate = dateValue ? format(dateValue, "yyyy-MM-dd") : "";
+
+        // Solo actualiza si el valor es diferente para evitar el bucle infinito
+        if (data.birthday !== formattedDate) {
+            setData("birthday", formattedDate);
+        }
+    }, [dateValue]); // Dependencia solo en dateValue
 
     useEffect(() => {
         return () => {
@@ -39,6 +51,47 @@ export default function Register() {
 
         post(route("register"));
     };
+
+    const [departamento, setDepartamento] = useState("");
+    const [provincia, setProvincia] = useState("");
+    const [distrito, setDistrito] = useState("");
+
+    // Actualiza las provincias cuando cambia el departamento
+    const handleDepartamentoChange = (value) => {
+        // setDepartamento(value);
+        // setProvincia("");
+        // setDistrito("");
+        // setData({ ...data, departamento: value, provincia: "", distrito: "" });
+        setData({ ...data, departamento:value});
+        setDepartamento(value);
+        setProvincia("");
+        setDistrito("");
+    };
+
+    // Actualiza los distritos cuando cambia la provincia
+    const handleProvinciaChange = (value) => {
+        // setProvincia(value);
+        // setDistrito("");
+        // setData({ ...data, provincia: value, distrito: "" });
+        setData({ ...data, provincia:value});
+        setProvincia(value);
+        setProvincia(value);
+        setDistrito("");
+    };
+
+    const handleDistritoChange = (value) => {
+        // setData({ ...data, distrito: value });
+        setData({ ...data, distrito:value});
+        setDistrito(value);
+    };
+
+    // Obtiene las provincias para el departamento seleccionado
+    const provincias = departamento
+        ? dataDepartamentos[departamento] || []
+        : [];
+
+    // Obtiene los distritos para la provincia seleccionada
+    const distritos = provincia ? dataProvincias[provincia] || [] : [];
 
     return (
         <GuestLayout>
@@ -63,7 +116,7 @@ export default function Register() {
                     <InputError message={errors.name} className="mt-2" />
                 </div>
                 <div className="flex space-x-2">
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel
                             htmlFor="paternal"
                             value="Apellido Paterno"
@@ -90,7 +143,7 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel
                             htmlFor="maternal"
                             value="Apellido Materno"
@@ -119,20 +172,21 @@ export default function Register() {
                 </div>
 
                 <div className="flex space-x-2">
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel htmlFor="distrito" value="Departamento" />
 
-                        <TextInput
+                        <Select
+                            key={`departamento-${departamento}`}
                             id="departamento"
                             name="departamento"
-                            value={data.departamento}
+                            value={departamento}
                             className="mt-1 block w-full"
                             autoComplete="departamento"
-                            onChange={(e) =>
-                                setData(
-                                    "departamento",
-                                    e.target.value.toUpperCase()
-                                )
+                            data={Object.keys(dataDepartamentos)}
+                            // onChange={(value) => setData("departamento", value)}
+                            // onChange={handleDepartamentoChange}
+                            onChange={(value) =>
+                                handleDepartamentoChange(value)
                             }
                             required
                         />
@@ -143,21 +197,20 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel htmlFor="provincia" value="Provincia" />
 
-                        <TextInput
+                        <Select
+                            key={`provincia-${provincia}`}
                             id="provincia"
                             name="provincia"
-                            value={data.provincia}
+                            value={provincia}
                             className="mt-1 block w-full"
                             autoComplete="provincia"
-                            onChange={(e) =>
-                                setData(
-                                    "provincia",
-                                    e.target.value.toUpperCase()
-                                )
-                            }
+                            data={provincias}
+                            // onChange={(value) => setData("provincia", value)}
+                            // onChange={handleProvinciaChange}
+                            onChange={(value) => handleProvinciaChange(value)}
                             required
                         />
 
@@ -167,21 +220,21 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel htmlFor="distrito" value="Distrito" />
 
-                        <TextInput
+                        <Select
+                            key={`distrito-${distrito}`}
                             id="distrito"
                             name="distrito"
-                            value={data.distrito}
+                            value={distrito}
                             className="mt-1 block w-full"
                             autoComplete="distrito"
-                            onChange={(e) =>
-                                setData(
-                                    "distrito",
-                                    e.target.value.toUpperCase()
-                                )
-                            }
+                            data={distritos}
+                            // onChange={(value) => setData("distrito", value)}
+                            // onChange={(value) => setDistrito(value)}
+
+                            onChange={(value) => handleDistritoChange(value)}
                             required
                         />
 
@@ -193,7 +246,7 @@ export default function Register() {
                 </div>
 
                 <div className="flex space-x-2">
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel htmlFor="dni" value="DNI" />
 
                         <TextInput
@@ -210,30 +263,19 @@ export default function Register() {
                         <InputError message={errors.dni} className="mt-2" />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel
                             htmlFor="birthday"
                             value="Fecha de nacimiento"
                         />
-
-                        {/* <TextInput
+                        <DatePickerInput
                             id="birthday"
                             name="birthday"
-                            value={data.birthday}
                             className="mt-1 block w-full"
-                            autoComplete="birthday"
-                            onChange={(e) =>
-                                setData("birthday", e.target.value)
+                            value={
+                                data.birthday ? new Date(data.birthday) : null
                             }
-                            required
-                        /> */}
-                        <DatePicker
-                            id="birthday"
-                            name="birthday"
-                            className="mt-1 block w-full"
-                            onChange={handleDateChange}
-                            format="YYYY-MM-DD" // Formato de fecha, ajusta según necesidad
-                            autoComplete="birthday"
+                            onChange={setDateValue}
                             required
                         />
 
@@ -243,7 +285,7 @@ export default function Register() {
                         />
                     </div>
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 w-full">
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -260,7 +302,7 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 w-full">
                     <InputLabel
                         htmlFor="current_address"
                         value="Dirección actual"
@@ -273,10 +315,7 @@ export default function Register() {
                         className="mt-1 block w-full"
                         autoComplete="current_address"
                         onChange={(e) =>
-                            setData(
-                                "current_address",
-                                e.target.value.toUpperCase()
-                            )
+                            setData("current_address", e.target.value)
                         }
                         required
                     />
@@ -288,7 +327,7 @@ export default function Register() {
                 </div>
 
                 <div className="flex space-x-2">
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel htmlFor="password" value="Contraseña" />
 
                         <TextInput
@@ -310,7 +349,7 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         <InputLabel
                             htmlFor="password_confirmation"
                             value="Confirmar contraseña"

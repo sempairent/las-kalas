@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -5,8 +6,8 @@ import TextInput from "@/Components/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 
-// import moment from "moment";
-import { DatePicker } from "antd";
+import { DatePickerInput } from "@mantine/dates";
+import { format, parseISO } from "date-fns";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -29,9 +30,19 @@ export default function UpdateProfileInformation({
             current_address: user.current_address,
         });
 
-    const handleDateChange = (date, dateString) => {
-        setData("birthday", dateString); // Actualiza el estado del formulario con la fecha seleccionada
-    };
+    const [dateValue, setDateValue] = useState(
+        user.birthday ? parseISO(user.birthday) : null
+    );
+
+    useEffect(() => {
+        // Convierte la fecha seleccionada a un string en el formato 'yyyy-MM-dd'
+        const formattedDate = dateValue ? format(dateValue, "yyyy-MM-dd") : "";
+
+        // Solo actualiza si el valor es diferente para evitar el bucle infinito
+        if (data.birthday !== formattedDate) {
+            setData("birthday", formattedDate);
+        }
+    }, [dateValue]); // Dependencia solo en dateValue
 
     const submit = (e) => {
         e.preventDefault();
@@ -82,7 +93,6 @@ export default function UpdateProfileInformation({
                             setData("paternal", e.target.value.toUpperCase())
                         }
                         required
-                        isFocused
                         autoComplete="paternal"
                     />
 
@@ -100,7 +110,6 @@ export default function UpdateProfileInformation({
                             setData("maternal", e.target.value.toUpperCase())
                         }
                         required
-                        isFocused
                         autoComplete="maternal"
                     />
 
@@ -121,7 +130,6 @@ export default function UpdateProfileInformation({
                             )
                         }
                         required
-                        isFocused
                         autoComplete="departamento"
                     />
 
@@ -142,7 +150,6 @@ export default function UpdateProfileInformation({
                             setData("provincia", e.target.value.toUpperCase())
                         }
                         required
-                        isFocused
                         autoComplete="provincia"
                     />
 
@@ -160,7 +167,6 @@ export default function UpdateProfileInformation({
                             setData("distrito", e.target.value.toUpperCase())
                         }
                         required
-                        isFocused
                         autoComplete="distrito"
                     />
 
@@ -176,7 +182,6 @@ export default function UpdateProfileInformation({
                         value={data.dni}
                         onChange={(e) => setData("dni", e.target.value)}
                         required
-                        isFocused
                         autoComplete="dni"
                         maxLength={8}
                     />
@@ -202,13 +207,13 @@ export default function UpdateProfileInformation({
                         autoComplete="birthday"
                     /> */}
 
-                    <DatePicker
+                    <DatePickerInput
+                        // size="xl"
                         id="birthday"
                         name="birthday"
                         className="mt-1 block w-full"
-                        onChange={handleDateChange}
-                        format="YYYY-MM-DD" // Formato de fecha, ajusta según necesidad
-                        autoComplete="birthday"
+                        value={dateValue}
+                        onChange={setDateValue}
                         required
                     />
 
@@ -242,13 +247,9 @@ export default function UpdateProfileInformation({
                         className="mt-1 block w-full"
                         value={data.current_address}
                         onChange={(e) =>
-                            setData(
-                                "current_address",
-                                e.target.value.toUpperCase()
-                            )
+                            setData("current_address", e.target.value)
                         }
                         required
-                        isFocused
                         autoComplete="current_address"
                     />
 
