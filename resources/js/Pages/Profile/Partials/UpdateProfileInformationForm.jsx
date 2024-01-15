@@ -250,7 +250,7 @@ export default function UpdateProfileInformation({
                             setData("current_address", e.target.value)
                         }
                         required
-                        autoComplete="current_address"
+                        // autoComplete="current_address"
                     />
 
                     <InputError
